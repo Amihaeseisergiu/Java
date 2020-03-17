@@ -1,0 +1,17 @@
+com\mycompany\laborator5\LoadCommand.class
+com\mycompany\laborator5\Catalog.class
+com\mycompany\laborator5\DuplicateNameException.class
+com\mycompany\laborator5\InvalidCatalogException.class
+com\mycompany\laborator5\Document.class
+com\mycompany\laborator5\InfoCommand.class
+com\mycompany\laborator5\InvalidPathException.class
+com\mycompany\laborator5\Shell.class
+com\mycompany\laborator5\ViewCommand.class
+com\mycompany\laborator5\ReportHtmlCommand.class
+com\mycompany\laborator5\Command.class
+com\mycompany\laborator5\InvalidURLException.class
+com\mycompany\laborator5\ListCommand.class
+com\mycompany\laborator5\CatalogUtil.class
+com\mycompany\laborator5\InvalidCommandException.class
+com\mycompany\laborator5\ReportCommand.class
+com\mycompany\laborator5\Main.class
