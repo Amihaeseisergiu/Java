@@ -12,4 +12,8 @@ Am abordat compulsory, optional si bonus.
 La partea bonus se pot sterge de asemenea 
 nodurile (stergandu-se si muchiile incidente)
 si muchiile.
+
+Dupa ce au fost adaugate noduri din ComboBox
+se poate apasa pe butonul "Create Graph" 
+pentru a aplica forte nodurilor.
 ---------------------------------------------
