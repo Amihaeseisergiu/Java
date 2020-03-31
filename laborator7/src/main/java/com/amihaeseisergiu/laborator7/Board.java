@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.application.Platform;
 
 public class Board {
     
@@ -13,12 +12,19 @@ public class Board {
     private List<Player> players;
     private Game game;
     private int playerTurn;
+    int initialSize;
     
-    public Board(int n)
+    public Board(int n, int nrBlanks)
     {
-        for(int i = 1; i <= n; i++)
+        initialSize = n;
+        
+        for(int i = 1; i <= n - nrBlanks; i++)
         {
             tokens.add(new Token(i));
+        }
+        for(int i = 0; i < nrBlanks; i++)
+        {
+            tokens.add(new Token(true));
         }
         
         Collections.shuffle(tokens);
@@ -62,10 +68,11 @@ public class Board {
         try {
             Thread.sleep(thinkingTime * 1000);
         } catch (InterruptedException ex) {
-            Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
         
         setPlayerTurn((getPlayerTurn() + 1) % getPlayers().size());
+        Platform.runLater(() -> game.gameScreen.modifyPlayerTurn(playerTurn));
     }
 
     /**

@@ -1,8 +1,7 @@
 package com.amihaeseisergiu.laborator7;
 
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.atomic.AtomicInteger;
+import javafx.application.Platform;
 
 public class ManualPlayer extends Player {
     
@@ -26,19 +25,27 @@ public class ManualPlayer extends Player {
                     System.out.println("It's " + this + "'s turn. Available tokens: ");
                     System.out.println(board.printTokens());
                     
-                    Scanner scan = new Scanner(System.in);
+                    Platform.runLater(() -> {
+                        board.getGame().gameScreen.disableAvailableTokens = false;
+                        board.getGame().gameScreen.modifyAvailableTokens();
+                        board.getGame().gameScreen.modifyCurrentTokens(this);
+                    });
                     
-                    int pick = scan.nextInt();
-                    while(pick >= board.getTokens().size() || pick < 0)
+                    wait = new AtomicInteger(-1);
+                    while(wait.get() == -1 && !board.getGame().ended()) {}
+                    
+                    if(wait.get() != -1)
                     {
-                        System.out.println("Token does not exist. Please pick another one: ");
-                        pick = scan.nextInt();
+                        int token = board.getTokens().get(wait.get()).getNumber();
+                    
+                        Platform.runLater(() -> {
+                            board.getGame().gameScreen.pressedButtonIndex = -1;
+                        });
+
+                        board.takeMove(this, wait.get(), 0);
+
+                        System.out.println(this + " has extracted the token " + token);
                     }
-                    int token = board.getTokens().get(pick).getNumber();
-                    
-                    board.takeMove(this, pick, 0);
-                    
-                    System.out.println(this + " has extracted the token " + token);
                     board.getGame().getTimeKeeper().setDisplayTime(true);
                     board.notifyAll();
                 }
@@ -47,7 +54,7 @@ public class ManualPlayer extends Player {
                     try {
                         board.wait();
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                        ex.printStackTrace();
                     }
                 }
             }

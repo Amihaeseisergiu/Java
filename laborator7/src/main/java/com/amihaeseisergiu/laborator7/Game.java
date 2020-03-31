@@ -1,7 +1,9 @@
 package com.amihaeseisergiu.laborator7;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.application.Platform;
 
 public class Game {
     
@@ -9,6 +11,7 @@ public class Game {
     private final TimeKeeper timeKeeper;
     private Player winner;
     private boolean stop = false;
+    GameScreen gameScreen;
     
     public Game(Board board)
     {
@@ -45,6 +48,11 @@ public class Game {
                 builder.append(" ");
             }
             System.out.println("The Winner is " + winner + " with a score of " + longest.size() + " | Tokens: " + winner.printTokens() + "| Longest Progression: " + builder.toString());
+            Platform.runLater(() -> {
+                List<Player> player = new ArrayList<>();
+                player.add(winner);
+                GameWinningScreen g = new GameWinningScreen(this, gameScreen.stage, player);
+            });
         }
         else
         {
@@ -61,12 +69,21 @@ public class Game {
                         builder.append(" ");
                     }
                     System.out.println("The Winner is " + p + " with a score of " + longest.size() + " | Tokens: " + p.printTokens() + "| Longest Progression: " + builder.toString());
+                    Platform.runLater(() -> {
+                        List<Player> player = new ArrayList<>();
+                        player.add(p);
+                        GameWinningScreen g = new GameWinningScreen(this, this.gameScreen.stage, player);
+                    });
+                    
                     hasWinner = true;
                     break;
                 }
             }
             if(!hasWinner)
             {
+                Platform.runLater(() -> {
+                    GameWinningScreen g = new GameWinningScreen(this, this.gameScreen.stage, board.getPlayers());
+                });
                 System.out.println("No one managed to finish. Final scores:");
                 for(Player p : board.getPlayers())
                 {

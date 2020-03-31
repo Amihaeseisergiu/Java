@@ -2,9 +2,7 @@ package com.amihaeseisergiu.laborator7;
 
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.application.Platform;
 
 public class SmartPlayer extends Player {
 
@@ -25,6 +23,12 @@ public class SmartPlayer extends Player {
                 {
                     System.out.println("It's " + this + "'s turn. Available tokens: ");
                     System.out.println(board.printTokens());
+                    
+                    Platform.runLater(() -> {
+                        board.getGame().gameScreen.disableAvailableTokens = true;
+                        board.getGame().gameScreen.modifyCurrentTokens(this);
+                        board.getGame().gameScreen.modifyAvailableTokens();
+                    });
 
                     int pick = findBestOption();
 
@@ -40,7 +44,7 @@ public class SmartPlayer extends Player {
                     try {
                         board.wait();
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                        ex.printStackTrace();
                     }
                 }
             }
@@ -66,7 +70,7 @@ public class SmartPlayer extends Player {
             for(Player p : board.getPlayers())
             {
                 List<Token> temp = p.getLongestProgression();
-                if(temp.get(temp.size() - 1).getNumber() - temp.get(temp.size() - 2).getNumber() == t.getNumber() - temp.get(temp.size() - 1).getNumber())
+                if(t.isBlank() || temp.get(temp.size() - 1).getNumber() - temp.get(temp.size() - 2).getNumber() == t.getNumber() - temp.get(temp.size() - 1).getNumber())
                     cont++;
             }
             if(t.getNumber() - prog.get(prog.size() - 1).getNumber() == diff)

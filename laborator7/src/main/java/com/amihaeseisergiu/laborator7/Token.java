@@ -10,6 +10,11 @@ public class Token implements Comparable<Token> {
         this.number = number;
     }
     
+    public Token(boolean isBlanks)
+    {
+        this.blank = true;
+    }
+    
     /**
      * @return the number
      */

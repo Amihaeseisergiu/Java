@@ -1,5 +1,7 @@
 package com.amihaeseisergiu.laborator7;
 
+import javafx.application.Platform;
+
 public class TimeKeeper implements Runnable {
 
     private final long TIME_TO_STOP = 100; //in seconds
@@ -29,8 +31,7 @@ public class TimeKeeper implements Runnable {
             }
             else if(currentTime%TIME_INTERVAL == 0 && !displayedOnce)
             {
-                if(displayTime)
-                    System.out.println("Elapsed Time: " + String.valueOf(currentTime) + " s. Time left: " + (TIME_TO_STOP - currentTime));
+                Platform.runLater(() -> game.gameScreen.modifyTime(TIME_TO_STOP - currentTime));
                 displayedOnce = true;
                 currentTimeCopy = currentTime;
             }

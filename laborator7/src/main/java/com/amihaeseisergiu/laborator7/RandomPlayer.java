@@ -1,8 +1,7 @@
 package com.amihaeseisergiu.laborator7;
 
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.application.Platform;
 
 public class RandomPlayer extends Player {
     
@@ -24,6 +23,12 @@ public class RandomPlayer extends Player {
                     System.out.println("It's " + this + "'s turn. Available tokens:");
                     System.out.println(board.printTokens());
                     
+                    Platform.runLater(() -> {
+                        board.getGame().gameScreen.disableAvailableTokens = true;
+                        board.getGame().gameScreen.modifyCurrentTokens(this);
+                        board.getGame().gameScreen.modifyAvailableTokens();
+                    });
+                    
                     Random rand = new Random();
                     
                     int pick = rand.nextInt(board.getTokens().size());
@@ -39,7 +44,7 @@ public class RandomPlayer extends Player {
                     try {
                         board.wait();
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                        ex.printStackTrace();
                     }
                 }
             }
