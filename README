@@ -28,3 +28,13 @@ Am abordat compulsory, optional si bonus
 Video demonstrativ se gaseste in
 laborator7/demo.mp4
 ---------------------------------------------
+
+---------------------------------------------
+Laborator 8:
+Am abordat compulsory, optional si bonus
+
+Pentru bonus, un scenariu in care connection
+pool ar fi avantajos este atunci cand avem
+un numar mare de cereri la baza de date care
+dureaza un timp scurt pentru a fi realizate
+---------------------------------------------
