@@ -1,0 +1,6 @@
+jdbcUrl=jdbc:oracle:thin:@localhost:1521:xe
+dataSource.user=database
+dataSource.password=sql
+dataSource.cachePrepStmts=true
+dataSource.prepStmtCacheSize=250
+dataSource.prepStmtCacheSqlLimit=2048
