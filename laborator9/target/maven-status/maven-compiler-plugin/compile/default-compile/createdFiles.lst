@@ -1,0 +1,17 @@
+Entity\Album.class
+Entity\Artist.class
+repo\AbstractFactory.class
+Entity\Chart.class
+repo\RepositoryFactory.class
+repo\ArtistRepository.class
+repo\AbstractRepository.class
+Entity\Genre.class
+repo\AlbumRepository.class
+repo\ChartRepository.class
+util\PersistenceUtil.class
+util\TableFiller.class
+util\DatabaseUtil.class
+repo\GenreRepository.class
+util\ConfigurationFile.class
+Entity\ChartLink.class
+app\AlbumManager.class
