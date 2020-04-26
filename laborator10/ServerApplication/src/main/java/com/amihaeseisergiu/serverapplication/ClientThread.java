@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClientThread extends Thread {
 
@@ -112,8 +114,7 @@ public class ClientThread extends Thread {
                     }
                 }
                 else if(splitRequest[0].equals("leave"))
-                {
-                    
+                {               
                     for(int i = 0; i < board.getPlayers().size(); i++)
                     {
                         if(board.getPlayers().get(i) != this)
@@ -129,6 +130,51 @@ public class ClientThread extends Thread {
                     {
                         server.getGames().remove(board.getGame());
                     }
+                    board = null;
+                }
+                else if(splitRequest[0].equals("startgame"))
+                {
+                    for(int i = 0; i < board.getPlayers().size(); i++)
+                    {
+                        board.getPlayers().get(i).getOut().println("startgame");
+                        board.getPlayers().get(i).getOut().flush();
+                    }
+                }
+                else if(splitRequest[0].equals("move"))
+                {
+                    if(board.canMove(this))
+                    {
+                        if(board.getBoard()[Integer.valueOf(splitRequest[1])][Integer.valueOf(splitRequest[2])] == -1)
+                        {
+                            board.takeMove(this, Integer.valueOf(splitRequest[1]), Integer.valueOf(splitRequest[2]));
+                            
+                            if(board.isActive())
+                            {
+                                for(int i = 0; i < board.getPlayers().size(); i++)
+                                {
+                                    board.getPlayers().get(i).getOut().println("acceptedmove " + 
+                                            Integer.valueOf(splitRequest[1]) + " " + 
+                                            Integer.valueOf(splitRequest[2]) + " " +
+                                            board.getPlayerTurn());
+                                    board.getPlayers().get(i).getOut().flush();
+                                }
+                            }
+                            else
+                            {
+                                for(int i = 0; i < board.getPlayers().size(); i++)
+                                {
+                                    board.getPlayers().get(i).getOut().println("gameended " + 
+                                            board.getPlayers().indexOf(this));
+                                    board.getPlayers().get(i).getOut().flush();
+                                }
+                            }
+                        }
+                    }
+                }
+                else if(splitRequest[0].equals("destroylobby"))
+                {
+                    server.getGames().remove(board.getGame());
+                    board.getPlayers().remove(this);
                     board = null;
                 }
                 else if(splitRequest[0].equals("exit"))

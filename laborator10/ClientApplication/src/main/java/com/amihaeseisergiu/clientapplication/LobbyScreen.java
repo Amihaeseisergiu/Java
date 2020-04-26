@@ -31,6 +31,7 @@ public class LobbyScreen {
         this.stage = stage;
         this.in = in;
         this.out = out;
+        AtomicInteger playerId = new AtomicInteger();
         
         BorderPane pane = new BorderPane();
         pane.setPadding(new Insets(5,5,5,5));
@@ -66,6 +67,7 @@ public class LobbyScreen {
         
         if(joined)
         {
+            playerId.set(1);
             startGame.setVisible(true);
             for(int i = 0; i < 2; i++)
             {
@@ -84,6 +86,7 @@ public class LobbyScreen {
         }
         else
         {
+            playerId.set(0);
             Label player1 = new Label("Player 1 (You)");
             HBox player1HBox = new HBox(player1);
             player1HBox.setSpacing(10);
@@ -130,9 +133,17 @@ public class LobbyScreen {
                             
                             for(int i = 0; i < centerScrollPaneVBox.getChildren().size(); i++)
                             {
+                                playerId.set(i);
                                 ((Label)((HBox) centerScrollPaneVBox.getChildren().get(i)).getChildren().get(0)).setText("Player " + (i+1) + " (You)");
                             }
                         });
+                    }
+                    else if(split != null && split[0].equals("startgame"))
+                    {
+                        Platform.runLater(() -> {
+                            GameScreen gs = new GameScreen(stage, in, out, playerId.get());
+                        });
+                        return;
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(StartScreen.class.getName()).log(Level.SEVERE, null, ex);
@@ -149,7 +160,7 @@ public class LobbyScreen {
         });
         
         startGame.setOnAction(e -> {
-            commandsReader.stop();
+            sendToServer("startgame");
         });
         
         stage.setOnCloseRequest(e -> {
